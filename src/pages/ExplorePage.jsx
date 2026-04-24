@@ -7,7 +7,7 @@ import { SearchBar } from '../components/explore/SearchBar'
 import { VibeFilter } from '../components/explore/VibeFilter'
 import { Skeleton } from '../components/ui/Skeleton'
 import { useDebounce } from '../hooks/useDebounce'
-import { useUser } from '../context/UserContext'
+import { useUser } from '../context/UserContext.jsx'
 import { Button } from '../components/ui/Button'
 
 export function ExplorePage() {

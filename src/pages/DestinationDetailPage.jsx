@@ -9,7 +9,7 @@ import { Button } from '../components/ui/Button'
 import { Modal } from '../components/ui/Modal'
 import { Skeleton } from '../components/ui/Skeleton'
 import { useApi } from '../hooks/useApi'
-import { useUser } from '../context/UserContext'
+import { useUser } from '../context/UserContext.jsx'
 
 export function DestinationDetailPage() {
   const { id } = useParams()

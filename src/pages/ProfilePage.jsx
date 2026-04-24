@@ -3,7 +3,7 @@ import { getTravelerTypeDetails } from '../api/users'
 import { TravelerTypeCard } from '../components/profile/TravelerTypeCard'
 import { QuizModal } from '../components/profile/QuizModal'
 import { Card } from '../components/ui/Card'
-import { useUser } from '../context/UserContext'
+import { useUser } from '../context/UserContext.jsx'
 
 export function ProfilePage() {
   const { user, loading, patchUser } = useUser()

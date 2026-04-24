@@ -6,7 +6,7 @@ import { TripStamp } from '../components/trips/TripStamp'
 import { WishlistCard } from '../components/trips/WishlistCard'
 import { Button } from '../components/ui/Button'
 import { Skeleton } from '../components/ui/Skeleton'
-import { useUser } from '../context/UserContext'
+import { useUser } from '../context/UserContext.jsx'
 
 export function TripsPage() {
   const navigate = useNavigate()
