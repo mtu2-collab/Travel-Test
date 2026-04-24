@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { TierCard } from '../components/plan/TierCard'
 import { TripMatchForm } from '../components/plan/TripMatchForm'
+import { getPrefilledDestination } from './planPrefill'
 
 const tiers = [
   { name: 'Starter', price: '$49', desc: 'AI-assisted itinerary PDF' },
@@ -11,7 +12,7 @@ const tiers = [
 
 export function PlanPage() {
   const [searchParams] = useSearchParams()
-  const destination = useMemo(() => searchParams.get('destination') || '', [searchParams])
+  const destination = useMemo(() => getPrefilledDestination(searchParams), [searchParams])
 
   return (
     <div>
