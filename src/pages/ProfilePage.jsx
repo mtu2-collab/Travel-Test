@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { travelerTypeDetails } from '../api/seed/users'
 import { TravelerTypeCard } from '../components/profile/TravelerTypeCard'
 import { QuizModal } from '../components/profile/QuizModal'
@@ -6,11 +6,16 @@ import { Card } from '../components/ui/Card'
 import { useUser } from '../context/UserContext'
 
 export function ProfilePage() {
-  const { user, patchUser } = useUser()
-  const [bio, setBio] = useState(user?.bio || '')
+  const { user, loading, patchUser } = useUser()
+  const [bio, setBio] = useState('')
   const [open, setOpen] = useState(false)
 
-  if (!user) return null
+  useEffect(() => {
+    setBio(user?.bio || '')
+  }, [user?.bio])
+
+  if (loading) return <Card className="p-4 text-sm">Loading profile...</Card>
+  if (!user) return <Card className="p-4 text-sm">Unable to load profile.</Card>
 
   return (
     <div>
@@ -23,9 +28,14 @@ export function ProfilePage() {
           </div>
         </div>
         <textarea value={bio} onChange={(e) => setBio(e.target.value)} onBlur={() => patchUser({ bio })} className="mt-3 h-20 w-full rounded-xl border p-2 text-sm" />
+        <div className="mt-3 grid grid-cols-3 text-center text-xs">
+          <div><p className="font-display text-lg">{user.countriesVisited}</p><p className="text-navy/60">Countries</p></div>
+          <div><p className="font-display text-lg">{user.completedTrips.length}</p><p className="text-navy/60">Trips</p></div>
+          <div><p className="font-display text-lg">{user.wishlist.length}</p><p className="text-navy/60">Wishlist</p></div>
+        </div>
       </Card>
       <Card className="mt-3 p-4 text-sm">
-        <p>Settings</p>
+        <p className="font-semibold">Settings</p>
         <button className="mt-2 text-coral underline">FAQ & Support</button>
       </Card>
       <TravelerTypeCard type={user.travelerType} detail={travelerTypeDetails[user.travelerType]} onRetake={() => setOpen(true)} />
