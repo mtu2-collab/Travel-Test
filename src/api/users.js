@@ -1,5 +1,6 @@
 // FAKE API — replace with real fetch() calls when backend is ready
-// GET /api/users/me, PATCH /api/users/me, GET /api/users/:id/traveler-type
+// GET /api/users/me, PATCH /api/users/me, GET /api/users/:id/traveler-type, GET /api/traveler-types/:type
+import { travelerTypeDetailsSeed } from './seed/travelerTypes'
 import { store, persistStore, simulateDelay, ok, fail } from './store'
 
 const CURRENT_USER_ID = 'user-1'
@@ -23,4 +24,10 @@ export async function getTravelerType(userId) {
   await simulateDelay()
   const user = store.users.find((u) => u.id === userId)
   return user ? ok(user.travelerType) : fail('Traveler type not found')
+}
+
+export async function getTravelerTypeDetails(type) {
+  await simulateDelay()
+  const details = travelerTypeDetailsSeed[type]
+  return details ? ok(details) : fail('Traveler type details not found')
 }

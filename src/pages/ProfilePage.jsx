@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { travelerTypeDetails } from '../api/seed/users'
+import { getTravelerTypeDetails } from '../api/users'
 import { TravelerTypeCard } from '../components/profile/TravelerTypeCard'
 import { QuizModal } from '../components/profile/QuizModal'
 import { Card } from '../components/ui/Card'
@@ -9,10 +9,16 @@ export function ProfilePage() {
   const { user, loading, patchUser } = useUser()
   const [bio, setBio] = useState('')
   const [open, setOpen] = useState(false)
+  const [typeDetail, setTypeDetail] = useState(null)
 
   useEffect(() => {
     setBio(user?.bio || '')
   }, [user?.bio])
+
+  useEffect(() => {
+    if (!user?.travelerType) return
+    getTravelerTypeDetails(user.travelerType).then((res) => setTypeDetail(res.data || null))
+  }, [user?.travelerType])
 
   if (loading) return <Card className="p-4 text-sm">Loading profile...</Card>
   if (!user) return <Card className="p-4 text-sm">Unable to load profile.</Card>
@@ -38,7 +44,7 @@ export function ProfilePage() {
         <p className="font-semibold">Settings</p>
         <button className="mt-2 text-coral underline">FAQ & Support</button>
       </Card>
-      <TravelerTypeCard type={user.travelerType} detail={travelerTypeDetails[user.travelerType]} onRetake={() => setOpen(true)} />
+      <TravelerTypeCard type={user.travelerType} detail={typeDetail} onRetake={() => setOpen(true)} />
       <QuizModal open={open} onClose={() => setOpen(false)} onComplete={(travelerType) => patchUser({ travelerType })} />
     </div>
   )

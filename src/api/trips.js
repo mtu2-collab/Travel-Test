@@ -1,5 +1,5 @@
 // FAKE API — replace with real fetch() calls when backend is ready
-// GET /api/users/:id/trips/saved, GET /api/users/:id/trips/completed, POST /api/trips/saved, PATCH /api/trips/:id/complete, DELETE /api/trips/:id
+// GET /api/users/:id/trips/saved, GET /api/users/:id/trips/completed, POST /api/trips/saved, PATCH /api/trips/:tripId/complete, DELETE /api/trips/:tripId
 import { store, persistStore, simulateDelay, ok, fail } from './store'
 
 const userById = (id = 'user-1') => store.users.find((u) => u.id === id)
@@ -29,22 +29,26 @@ export async function saveTrip(destinationId) {
   return ok(user.wishlist)
 }
 
-export async function markTripComplete(destinationId, notes = '', dateVisited) {
+export async function markTripComplete(tripId, notes = '', dateVisited) {
   await simulateDelay()
   const user = userById()
   if (!user) return fail('User not found')
-  user.wishlist = user.wishlist.filter((id) => id !== destinationId)
-  user.completedTrips.unshift({ destinationId, notes, dateVisited: dateVisited || new Date().toISOString().slice(0, 7) })
-  user.countriesVisited = new Set(user.completedTrips.map((trip) => (store.destinations.find((d) => d.id === trip.destinationId)?.country || ''))).size
+
+  const destination = store.destinations.find((d) => d.id === tripId)
+  if (!destination) return fail('Destination not found')
+
+  user.wishlist = user.wishlist.filter((id) => id !== tripId)
+  user.completedTrips.unshift({ destinationId: tripId, notes, dateVisited: dateVisited || new Date().toISOString().slice(0, 7) })
+  user.countriesVisited = new Set(user.completedTrips.map((trip) => (store.destinations.find((d) => d.id === trip.destinationId)?.country || '')).filter(Boolean)).size
   persistStore()
   return ok(user.completedTrips)
 }
 
-export async function deleteTrip(destinationId) {
+export async function deleteTrip(tripId) {
   await simulateDelay()
   const user = userById()
   if (!user) return fail('User not found')
-  user.wishlist = user.wishlist.filter((id) => id !== destinationId)
+  user.wishlist = user.wishlist.filter((id) => id !== tripId)
   persistStore()
   return ok(user.wishlist)
 }
