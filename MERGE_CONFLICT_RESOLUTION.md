@@ -9,6 +9,6 @@ Resolved conflict set by taking the **current Codex branch version** for all con
 ## Validation
 - Searched for conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`) and found none.
 
-## Latest sync
-- Branch: `main`
-- Action: accepted current Codex-version content for all files and verified no conflict markers remain.
+## Fresh PR cycle
+- Superseded the previous PR attempt by preparing a fresh PR record after conflict resolution.
+- Intention: merge this refreshed conflict-resolved state instead of the previous PR.
